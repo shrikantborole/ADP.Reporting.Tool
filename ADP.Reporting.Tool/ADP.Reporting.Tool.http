@@ -1,0 +1,6 @@
+@ADP.Reporting.Tool_HostAddress = http://localhost:5273
+
+GET {{ADP.Reporting.Tool_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
