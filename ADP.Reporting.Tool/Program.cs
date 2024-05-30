@@ -1,8 +1,14 @@
+using ADP.Reporting.Tool.DataServices;
+using ADP.Reporting.Tool.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IAlphabetRepository, AlphabetRepository>();
+builder.Services.AddScoped<IAlphabetService, AplhabetService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
