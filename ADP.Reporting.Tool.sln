@@ -3,13 +3,49 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADP.Reporting.Tool", "ADP.Reporting.Tool\ADP.Reporting.Tool.csproj", "{68CEDBBA-748F-4611-9E4F-0E34A4AA191E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADP.Reporting.Tool", "ADP.Reporting.Tool\ADP.Reporting.Tool.csproj", "{68CEDBBA-748F-4611-9E4F-0E34A4AA191E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADP.Reporting.Tool.DataServices", "ADP.Reporting.Tool.DataServices\ADP.Reporting.Tool.DataServices.csproj", "{B5407008-1F8A-4193-8C03-D373B0A9CC7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADP.Reporting.Tool.DataServices", "ADP.Reporting.Tool.DataServices\ADP.Reporting.Tool.DataServices.csproj", "{B5407008-1F8A-4193-8C03-D373B0A9CC7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADP.Reporting.Tool.Models", "ADP.Reporting.Tool.Models\ADP.Reporting.Tool.Models.csproj", "{5106F0BC-33C7-46C0-809F-05908982B9D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADP.Reporting.Tool.Models", "ADP.Reporting.Tool.Models\ADP.Reporting.Tool.Models.csproj", "{5106F0BC-33C7-46C0-809F-05908982B9D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADP.Reporting.Tool.Services", "ADP.Reporting.Tool.Services\ADP.Reporting.Tool.Services.csproj", "{E1C3E120-CF4F-4C0E-877A-8D5D8481E70F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADP.Reporting.Tool.Services", "ADP.Reporting.Tool.Services\ADP.Reporting.Tool.Services.csproj", "{E1C3E120-CF4F-4C0E-877A-8D5D8481E70F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Script", "Script", "{53350FE6-13CC-4612-A1AB-4475F3F02391}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SP", "SP", "{59575F3C-F241-483F-AB56-7F0D2CC62669}"
+	ProjectSection(SolutionItems) = preProject
+		Script\SP\DeleteAlphabet.sql = Script\SP\DeleteAlphabet.sql
+		Script\SP\DeleteClientInformation.sql = Script\SP\DeleteClientInformation.sql
+		Script\SP\DeleteReportType.sql = Script\SP\DeleteReportType.sql
+		Script\SP\DeleteRequestInformation.sql = Script\SP\DeleteRequestInformation.sql
+		Script\SP\DeleteSqlFileData.sql = Script\SP\DeleteSqlFileData.sql
+		Script\SP\GetAllAlphabets.sql = Script\SP\GetAllAlphabets.sql
+		Script\SP\GetAllClientInformations.sql = Script\SP\GetAllClientInformations.sql
+		Script\SP\GetAllRequestInformations.sql = Script\SP\GetAllRequestInformations.sql
+		Script\SP\GetAllSqlFileDatas.sql = Script\SP\GetAllSqlFileDatas.sql
+		Script\SP\GetAlphabetById.sql = Script\SP\GetAlphabetById.sql
+		Script\SP\GetClientInformationById.sql = Script\SP\GetClientInformationById.sql
+		Script\SP\GetReportTypeById.sql = Script\SP\GetReportTypeById.sql
+		Script\SP\GetRequestInformationById.sql = Script\SP\GetRequestInformationById.sql
+		Script\SP\GetSqlFileDataById.sql = Script\SP\GetSqlFileDataById.sql
+		Script\SP\InsertAlphabet.sql = Script\SP\InsertAlphabet.sql
+		Script\SP\InsertClientInformation.sql = Script\SP\InsertClientInformation.sql
+		Script\SP\InsertReportType.sql = Script\SP\InsertReportType.sql
+		Script\SP\InsertRequestInformation.sql = Script\SP\InsertRequestInformation.sql
+		Script\SP\InsertSqlFileData.sql = Script\SP\InsertSqlFileData.sql
+		Script\SP\UpdateAlphabet.sql = Script\SP\UpdateAlphabet.sql
+		Script\SP\UpdateClientInformation.sql = Script\SP\UpdateClientInformation.sql
+		Script\SP\UpdateReportType.sql = Script\SP\UpdateReportType.sql
+		Script\SP\UpdateRequestInformation.sql = Script\SP\UpdateRequestInformation.sql
+		Script\SP\UpdateSqlFileData.sql = Script\SP\UpdateSqlFileData.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{CDEF56AF-3E88-4B52-9EC8-4F0B1D10CD11}"
+	ProjectSection(SolutionItems) = preProject
+		Script\Database\Database Creation.sql = Script\Database\Database Creation.sql
+		Script\Database\Table Creation.sql = Script\Database\Table Creation.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +72,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{59575F3C-F241-483F-AB56-7F0D2CC62669} = {53350FE6-13CC-4612-A1AB-4475F3F02391}
+		{CDEF56AF-3E88-4B52-9EC8-4F0B1D10CD11} = {53350FE6-13CC-4612-A1AB-4475F3F02391}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {380A3E60-8110-417D-B998-0F5FD4A46199}
