@@ -23,5 +23,50 @@ namespace ADP.Reporting.Tool.Controllers
             var alphabets = await alphabetService.GetAllAlphabetsAsync(pageNumber, pageSize);
             return Ok(alphabets);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Alphabet>> GetAlphabetById(int id)
+        {
+            var alphabet = await alphabetService.GetAlphabetByIdAsync(id);
+            if (alphabet == null)
+            {
+                return NotFound();
+            }
+            return Ok(alphabet);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<int>> InsertAlphabet(Alphabet alphabet)
+        {
+            var response = await alphabetService.InsertAlphabetAsync(alphabet);
+            return Ok(response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAlphabet(int id, Alphabet alphabet)
+        {
+            if (id != alphabet.Id)
+            {
+                return BadRequest();
+            }
+
+            var result = await alphabetService.UpdateAlphabetAsync(alphabet);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAlphabet(int id)
+        {
+            var result = await alphabetService.DeleteAlphabetAsync(id);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }

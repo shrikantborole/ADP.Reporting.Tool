@@ -20,14 +20,14 @@ CREATE PROCEDURE [dbo].[UpdateAlphabet]
     @Id INT,
     @Alphabet NVARCHAR(50),
     @UpdatedDate DATETIME,
-    @UpdateBy NVARCHAR(100) = NULL,
+    @UpdatedBy NVARCHAR(100) = NULL,
     @Description NVARCHAR(500) = NULL
 AS
 BEGIN
     UPDATE [dbo].[Alphabet]
     SET [Alphabet] = @Alphabet,
         [UpdatedDate] = @UpdatedDate,
-        [UpdateBy] = @UpdateBy,
+        [UpdateBy] = @UpdatedBy,
         [Description] = @Description
     WHERE [Id] = @Id;
 END
