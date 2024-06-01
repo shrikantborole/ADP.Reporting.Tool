@@ -22,7 +22,7 @@ CREATE PROCEDURE [dbo].[UpdateRequestInformation]
     @RequestType NVARCHAR(200) = NULL,
     @Description NVARCHAR(1000) = NULL,
     @UpdatedDate DATETIME = NULL,
-    @UpdateBy NVARCHAR(200) = NULL,
+    @UpdatedBy NVARCHAR(200) = NULL,
     @ReportId INT
 AS
 BEGIN
@@ -31,7 +31,7 @@ BEGIN
         [RequestType] = @RequestType,
         [Description] = @Description,
         [UpdatedDate] = @UpdatedDate,
-        [UpdateBy] = @UpdateBy,
+        [UpdatedBy] = @UpdatedBy,
         [ReportId] = @ReportId
     WHERE [Id] = @Id;
 END

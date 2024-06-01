@@ -23,12 +23,12 @@ CREATE PROCEDURE [dbo].[InsertRequestInformation]
     @CreatedDate DATETIME = NULL,
     @UpdatedDate DATETIME = NULL,
     @CreatedBy NVARCHAR(200) = NULL,
-    @UpdateBy NVARCHAR(200) = NULL,
+    @UpdatedBy NVARCHAR(200) = NULL,
     @ReportId INT
 AS
 BEGIN
-    INSERT INTO [dbo].[RequestInformation] ([ClientId], [RequestType], [Description], [CreatedDate], [UpdatedDate], [CreatedBy], [UpdateBy], [ReportId])
-    VALUES (@ClientId, @RequestType, @Description, @CreatedDate, @UpdatedDate, @CreatedBy, @UpdateBy, @ReportId);
+    INSERT INTO [dbo].[RequestInformation] ([ClientId], [RequestType], [Description], [CreatedDate], [UpdatedDate], [CreatedBy], [UpdatedBy], [ReportId])
+    VALUES (@ClientId, @RequestType, @Description, @CreatedDate, @UpdatedDate, @CreatedBy, @UpdatedBy, @ReportId);
 END
 
 GO

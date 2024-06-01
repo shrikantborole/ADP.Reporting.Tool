@@ -22,7 +22,7 @@ CREATE PROCEDURE [dbo].[UpdateClientInformation]
     @Name NVARCHAR(200),
     @Description NVARCHAR(500) = NULL,
     @UpdatedDate DATETIME,
-    @UpdateBy NVARCHAR(100) = NULL
+    @UpdatedBy NVARCHAR(100) = NULL
 AS
 BEGIN
     UPDATE [dbo].[ClientInformation]
@@ -30,7 +30,7 @@ BEGIN
         [Name] = @Name,
         [Description] = @Description,
         [UpdatedDate] = @UpdatedDate,
-        [UpdateBy] = @UpdateBy
+        [UpdatedBy] = @UpdatedBy
     WHERE [Id] = @Id;
 END
 

@@ -23,11 +23,11 @@ CREATE PROCEDURE [dbo].[InsertClientInformation]
     @CreatedDate DATETIME,
     @UpdatedDate DATETIME,
     @CreatedBy NVARCHAR(100) = NULL,
-    @UpdateBy NVARCHAR(100) = NULL
+    @UpdatedBy NVARCHAR(100) = NULL
 AS
 BEGIN
-    INSERT INTO [dbo].[ClientInformation] ([AlphabetId], [Name], [Description], [CreatedDate], [UpdatedDate], [CreatedBy], [UpdateBy])
-    VALUES (@AlphabetId, @Name, @Description, @CreatedDate, @UpdatedDate, @CreatedBy, @UpdateBy);
+    INSERT INTO [dbo].[ClientInformation] ([AlphabetId], [Name], [Description], [CreatedDate], [UpdatedDate], [CreatedBy], [UpdatedBy])
+    VALUES (@AlphabetId, @Name, @Description, @CreatedDate, @UpdatedDate, @CreatedBy, @UpdatedBy);
 END
 
 GO

@@ -28,7 +28,7 @@ BEGIN
 			   CreatedDate,
 			   UpdatedDate,
 			   CreatedBy,
-			   UpdateBy,
+			   UpdatedBy,
 			   Description,  
                ROW_NUMBER() OVER (ORDER BY [Id]) AS RowNum 
         FROM [dbo].[Alphabet]  

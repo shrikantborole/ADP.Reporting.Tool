@@ -22,7 +22,7 @@ CREATE PROCEDURE [dbo].[UpdateReportType]
     @Type NVARCHAR(200) = NULL,
     @Description NVARCHAR(500) = NULL,
     @UpdatedDate DATETIME = NULL,
-    @UpdateBy NVARCHAR(100) = NULL
+    @UpdatedBy NVARCHAR(100) = NULL
 AS
 BEGIN
     UPDATE [dbo].[ReportType]
@@ -30,7 +30,7 @@ BEGIN
         [Type] = @Type,
         [Description] = @Description,
         [UpdatedDate] = @UpdatedDate,
-        [UpdateBy] = @UpdateBy
+        [UpdatedBy] = @UpdatedBy
     WHERE [Id] = @Id;
 END
 

@@ -25,10 +25,10 @@ CREATE PROCEDURE [dbo].[InsertAlphabet]
     @Description NVARCHAR(500) = NULL  
 AS  
 BEGIN  
-    INSERT INTO [dbo].[Alphabet] ([Alphabet], [CreatedDate], [UpdatedDate], [CreatedBy], [UpdateBy], [Description])  
+    INSERT INTO [dbo].[Alphabet] ([Alphabet], [CreatedDate], [UpdatedDate], [CreatedBy], [UpdatedBy], [Description])  
     VALUES (@Alphabet, @CreatedDate, @UpdatedDate, @CreatedBy, @UpdatedBy, @Description);  
     
-    SELECT Id, Alphabet as 'Name', CreatedDate, UpdatedDate, CreatedBy, UpdateBy, Description FROM [dbo].[Alphabet] 
+    SELECT Id, Alphabet as 'Name', CreatedDate, UpdatedDate, CreatedBy, UpdatedBy, Description FROM [dbo].[Alphabet] 
     WHERE ID = (SELECT SCOPE_IDENTITY())
 END
 

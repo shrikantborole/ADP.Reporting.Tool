@@ -3,4 +3,19 @@
 GET {{ADP.Reporting.Tool_HostAddress}}/weatherforecast/
 Accept: application/json
 
+GET {{ADP.Reporting.Tool_HostAddress}}/api/alphabet
+Accept: application/json
+
+GET {{ADP.Reporting.Tool_HostAddress}}/api/alphabet/{id}
+Accept: application/json
+
+POST {{ADP.Reporting.Tool_HostAddress}}/api/alphabet
+Accept: application/json
+
+PUT {{ADP.Reporting.Tool_HostAddress}}/api/alphabet/{id}
+Accept: application/json
+
+DELETE {{ADP.Reporting.Tool_HostAddress}}/api/alphabet/{id}
+Accept: application/json
+
 ###

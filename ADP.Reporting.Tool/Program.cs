@@ -1,5 +1,7 @@
 using ADP.Reporting.Tool.DataServices;
+using ADP.Reporting.Tool.DataServices.Interface;
 using ADP.Reporting.Tool.Services;
+using ADP.Reporting.Tool.Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<IAlphabetRepository, AlphabetRepository>();
 builder.Services.AddScoped<IAlphabetService, AplhabetService>();
+
+builder.Services.AddScoped<IClientInformationRepository, ClientInformationRepository>();
+builder.Services.AddScoped<IClientInformationService, ClientInformationService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

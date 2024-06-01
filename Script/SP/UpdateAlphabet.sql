@@ -27,7 +27,7 @@ BEGIN
     UPDATE [dbo].[Alphabet]
     SET [Alphabet] = @Alphabet,
         [UpdatedDate] = @UpdatedDate,
-        [UpdateBy] = @UpdatedBy,
+        [UpdatedBy] = @UpdatedBy,
         [Description] = @Description
     WHERE [Id] = @Id;
 END

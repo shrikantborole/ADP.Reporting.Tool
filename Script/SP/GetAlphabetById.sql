@@ -20,8 +20,14 @@ CREATE PROCEDURE [dbo].[GetAlphabetById]
     @Id INT
 AS
 BEGIN
-    SELECT * FROM [dbo].[Alphabet] WITH(NOLOCK)
-    WHERE [Id] = @Id;
+	SELECT Id,
+		Alphabet as Name,
+		CreatedDate,
+		UpdatedDate,
+		CreatedBy,
+		UpdatedBy,
+		Description FROM [dbo].[Alphabet]  
+		WHERE [Id] = @Id;  
 END
 
 GO

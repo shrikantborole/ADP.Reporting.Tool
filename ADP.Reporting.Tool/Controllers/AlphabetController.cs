@@ -1,7 +1,5 @@
-﻿using ADP.Reporting.Tool.DataServices;
-using ADP.Reporting.Tool.Models;
+﻿using ADP.Reporting.Tool.Models;
 using ADP.Reporting.Tool.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ADP.Reporting.Tool.Controllers
@@ -36,14 +34,19 @@ namespace ADP.Reporting.Tool.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> InsertAlphabet(Alphabet alphabet)
+        public async Task<ActionResult<Alphabet>> InsertAlphabet([FromBody]Alphabet alphabet)
         {
+            if (!ModelState.IsValid)
+            {
+                // Log or inspect the ModelState errors
+                return BadRequest(ModelState);
+            }
             var response = await alphabetService.InsertAlphabetAsync(alphabet);
             return Ok(response);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAlphabet(int id, Alphabet alphabet)
+        public async Task<IActionResult> UpdateAlphabet(int id, [FromBody] Alphabet alphabet)
         {
             if (id != alphabet.Id)
             {
