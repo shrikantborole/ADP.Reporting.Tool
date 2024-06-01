@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SP", "SP", "{59575F3C-F241-
 		Script\SP\DeleteSqlFileData.sql = Script\SP\DeleteSqlFileData.sql
 		Script\SP\GetAllAlphabets.sql = Script\SP\GetAllAlphabets.sql
 		Script\SP\GetAllClientInformations.sql = Script\SP\GetAllClientInformations.sql
+		Script\SP\GetAllReportTypes.sql = Script\SP\GetAllReportTypes.sql
 		Script\SP\GetAllRequestInformations.sql = Script\SP\GetAllRequestInformations.sql
 		Script\SP\GetAllSqlFileDatas.sql = Script\SP\GetAllSqlFileDatas.sql
 		Script\SP\GetAlphabetById.sql = Script\SP\GetAlphabetById.sql
