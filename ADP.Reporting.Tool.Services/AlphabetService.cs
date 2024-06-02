@@ -2,10 +2,10 @@
 using ADP.Reporting.Tool.Models;
 using ADP.Reporting.Tool.Services;
 
-public class AplhabetService : IAlphabetService
+public class AlphabetService : IAlphabetService
 {
     private readonly IAlphabetRepository _alphabetRepository;
-    public AplhabetService(IAlphabetRepository alphabetRepository)
+    public AlphabetService(IAlphabetRepository alphabetRepository)
     {
         _alphabetRepository = alphabetRepository;
     }
