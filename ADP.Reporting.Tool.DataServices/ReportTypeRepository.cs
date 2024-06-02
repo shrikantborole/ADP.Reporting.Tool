@@ -1,9 +1,9 @@
-﻿using ADP.Reporting.Tool.Models;
+﻿using ADP.Reporting.Tool.DataServices.Interface;
+using ADP.Reporting.Tool.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
 using System.Data;
-using ADP.Reporting.Tool.DataServices.Interface;
+using System.Data.SqlClient;
 
 namespace ADP.Reporting.Tool.DataServices
 {

@@ -9,10 +9,11 @@ namespace ADP.Reporting.Tool.Controllers
     public class AlphabetController : ControllerBase
     {
         private readonly IAlphabetService alphabetService;
-
-        public AlphabetController(IAlphabetService alphabetRepository)
+        private readonly ILogger<AlphabetController> logger;
+        public AlphabetController(IAlphabetService alphabetService, ILogger<AlphabetController> logger)
         {
-            alphabetService = alphabetRepository;
+            this.alphabetService = alphabetService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -34,7 +35,7 @@ namespace ADP.Reporting.Tool.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Alphabet>> InsertAlphabet([FromBody]Alphabet alphabet)
+        public async Task<ActionResult<Alphabet>> InsertAlphabet([FromBody] Alphabet alphabet)
         {
             if (!ModelState.IsValid)
             {
