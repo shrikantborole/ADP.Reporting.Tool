@@ -8,7 +8,7 @@
         public string SqlFileDataContent { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
-        public DateTime? CreatedBy { get; set; }
-        public DateTime? UpdatedBy { get; set; }
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
     }
 }

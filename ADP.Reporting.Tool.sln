@@ -40,6 +40,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SP", "SP", "{59575F3C-F241-
 		Script\SP\UpdateReportType.sql = Script\SP\UpdateReportType.sql
 		Script\SP\UpdateRequestInformation.sql = Script\SP\UpdateRequestInformation.sql
 		Script\SP\UpdateSqlFileData.sql = Script\SP\UpdateSqlFileData.sql
+		Upsertalphabet.sql = Upsertalphabet.sql
+		UpSertClientInformation.sql = UpSertClientInformation.sql
+		UpSertReportType.sql = UpSertReportType.sql
+		UpSertRequestInformation.sql = UpSertRequestInformation.sql
+		UpSertSqlFileData.sql = UpSertSqlFileData.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{CDEF56AF-3E88-4B52-9EC8-4F0B1D10CD11}"
@@ -47,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{CD
 		Script\Database\Database Creation.sql = Script\Database\Database Creation.sql
 		Script\Database\Table Creation.sql = Script\Database\Table Creation.sql
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADP.Reporting.Migration.Tool", "ADP.Reporting.Migration.Tool\ADP.Reporting.Migration.Tool.csproj", "{7FE30D4B-E197-4573-BC21-F6249A767BE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +77,10 @@ Global
 		{E1C3E120-CF4F-4C0E-877A-8D5D8481E70F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1C3E120-CF4F-4C0E-877A-8D5D8481E70F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1C3E120-CF4F-4C0E-877A-8D5D8481E70F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FE30D4B-E197-4573-BC21-F6249A767BE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FE30D4B-E197-4573-BC21-F6249A767BE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FE30D4B-E197-4573-BC21-F6249A767BE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FE30D4B-E197-4573-BC21-F6249A767BE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

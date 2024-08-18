@@ -37,5 +37,10 @@ namespace ADP.Reporting.Tool.Services
         {
             return await _sqlFileDataRepository.GetSqlFileDataByIdAsync(id);
         }
+
+        public async Task<SqlFileData> UpSertSqlFileDataAsync(SqlFileData sqlFileData)
+        {
+            return await _sqlFileDataRepository.UpSertSqlFileDataAsync(sqlFileData);
+        }
     }
 }

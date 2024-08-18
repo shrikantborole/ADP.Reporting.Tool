@@ -37,5 +37,10 @@ namespace ADP.Reporting.Tool.Services
         {
             return await _requestInformationRepository.GetRequestInformationByIdAsync(id);
         }
+
+        public async Task<RequestInformation> UpSertRequestInformationAsync(RequestInformation requestInformation)
+        {
+            return await _requestInformationRepository.UpSertRequestInformationAsync(requestInformation);
+        }
     }
 }

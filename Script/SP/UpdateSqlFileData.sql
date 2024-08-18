@@ -21,8 +21,8 @@ CREATE PROCEDURE [dbo].[UpdateSqlFileData]
     @RequestId INT,
     @Description NVARCHAR(500) = NULL,
     @SqlFileData NVARCHAR(MAX),
-    @UpdatedDate DATE = NULL,
-    @UpdatedBy DATETIME = NULL
+    @UpdatedDate NVARCHAR(100) = NULL,
+    @UpdatedBy NVARCHAR(100) = NULL
 AS
 BEGIN
     UPDATE [dbo].[SqlFileData]

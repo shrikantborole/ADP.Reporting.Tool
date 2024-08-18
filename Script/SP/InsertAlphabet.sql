@@ -16,22 +16,28 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[InsertAlphabet]  
-    @Alphabet NVARCHAR(50),  
-    @CreatedDate DATETIME,  
-    @UpdatedDate DATETIME,  
-    @CreatedBy NVARCHAR(100) = NULL,  
-    @UpdatedBy NVARCHAR(100) = NULL,  
-    @Description NVARCHAR(500) = NULL  
+ALTER PROCEDURE [dbo].[Insertalphabet] @Alphabet    NVARCHAR(50),  
+                                        @CreatedDate DATETIME,  
+                                        @UpdatedDate DATETIME,  
+                                        @CreatedBy   NVARCHAR(100) = NULL,  
+                                        @UpdatedBy   NVARCHAR(100) = NULL,  
+                                        @Description NVARCHAR(500) = NULL  
 AS  
-BEGIN  
-    INSERT INTO [dbo].[Alphabet] ([Alphabet], [CreatedDate], [UpdatedDate], [CreatedBy], [UpdatedBy], [Description])  
-    VALUES (@Alphabet, @CreatedDate, @UpdatedDate, @CreatedBy, @UpdatedBy, @Description);  
-    
-    SELECT Id, Alphabet as 'Name', CreatedDate, UpdatedDate, CreatedBy, UpdatedBy, Description FROM [dbo].[Alphabet] 
-    WHERE ID = (SELECT SCOPE_IDENTITY())
-END
-
+  BEGIN  
+            INSERT INTO [dbo].[alphabet]  
+                        ([alphabet],  
+                         [createddate],  
+                         [updateddate],  
+                         [createdby],  
+                         [updatedby],  
+                         [description])  
+            VALUES      (UPPER(@Alphabet),  
+                         @CreatedDate,  
+                         @UpdatedDate,  
+                         @CreatedBy,  
+                         @UpdatedBy,  
+                         @Description);  
+  END 
 GO
 
 

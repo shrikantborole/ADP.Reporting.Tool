@@ -16,20 +16,17 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[InsertSqlFileData]
-    @RequestId INT,
-    @Description NVARCHAR(500) = NULL,
-    @SqlFileData NVARCHAR(MAX),
-    @CreatedDate DATE = NULL,
-    @UpdatedDate DATE = NULL,
-    @CreatedBy DATETIME = NULL,
-    @UpdatedBy DATETIME = NULL
-AS
-BEGIN
-    INSERT INTO [dbo].[SqlFileData] ([RequestId], [Description], [SqlFileData], [CreatedDate], [UpdatedDate], [CreatedBy], [UpdatedBy])
-    VALUES (@RequestId, @Description, @SqlFileData, @CreatedDate, @UpdatedDate, @CreatedBy, @UpdatedBy);
-END
-
-GO
-
+CREATE PROCEDURE InsertSqlFileData  
+    @RequestId INT,  
+    @Description NVARCHAR(500) = NULL,  
+    @SqlFileData NVARCHAR(MAX),  
+    @CreatedDate DATE = NULL,  
+    @UpdatedDate DATE = NULL,  
+    @CreatedBy NVARCHAR(100) = NULL,  
+    @UpdatedBy NVARCHAR(100) = NULL  
+AS  
+BEGIN  
+    INSERT INTO [dbo].[SqlFileData] ([RequestId], [Description], [SqlFileData], [CreatedDate], [UpdatedDate], [CreatedBy], [UpdatedBy])  
+    VALUES (@RequestId, @Description, @SqlFileData, @CreatedDate, @UpdatedDate, @CreatedBy, @UpdatedBy);  
+END  
 

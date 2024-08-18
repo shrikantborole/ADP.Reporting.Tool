@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace ADP.Reporting.Tool.DataServices
 {
-    public class ClientInformationRepository :IClientInformationRepository
+    public class ClientInformationRepository : IClientInformationRepository
     {
         private readonly string _connectionString;
 
@@ -18,7 +18,7 @@ namespace ADP.Reporting.Tool.DataServices
 
         public async Task<int> InsertClientInformationAsync(ClientInformation clientInformation)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@AlphabetId", clientInformation.AlphabetId);
@@ -29,13 +29,13 @@ namespace ADP.Reporting.Tool.DataServices
                 parameters.Add("@CreatedBy", clientInformation.CreatedBy);
                 parameters.Add("@UpdatedBy", clientInformation.UpdatedBy);
 
-                return await db.ExecuteAsync("InsertClientInformation", parameters, commandType: CommandType.StoredProcedure);
+                return await connection.ExecuteAsync("InsertClientInformation", parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
         public async Task<int> UpdateClientInformationAsync(ClientInformation clientInformation)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", clientInformation.Id);
@@ -45,30 +45,57 @@ namespace ADP.Reporting.Tool.DataServices
                 parameters.Add("@UpdatedDate", clientInformation.UpdatedDate);
                 parameters.Add("@UpdatedBy", clientInformation.UpdatedBy);
 
-                return await db.ExecuteAsync("UpdateClientInformation", parameters, commandType: CommandType.StoredProcedure);
+                return await connection.ExecuteAsync("UpdateClientInformation", parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
         public async Task<int> DeleteClientInformationAsync(int id)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id);
 
-                return await db.ExecuteAsync("DeleteClientInformation", parameters, commandType: CommandType.StoredProcedure);
+                return await connection.ExecuteAsync("DeleteClientInformation", parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
         public async Task<IEnumerable<ClientInformation>> GetClientInformationAsync(int pageNumber, int pageSize)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@PageNumber", pageNumber);
                 parameters.Add("@PageSize", pageSize);
 
-                return await db.QueryAsync<ClientInformation>("GetAllClientInformations", parameters, commandType: CommandType.StoredProcedure);
+                return await connection.QueryAsync<ClientInformation>("GetAllClientInformations", parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<ClientInformation> UpSertClientInformationAsync(ClientInformation clientInformation)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@AlphabetId", clientInformation.AlphabetId);
+                    parameters.Add("@Name", clientInformation.Name);
+                    parameters.Add("@Description", clientInformation.Description);
+                    parameters.Add("@CreatedDate", clientInformation.CreatedDate);
+                    parameters.Add("@UpdatedDate", clientInformation.UpdatedDate);
+                    parameters.Add("@CreatedBy", clientInformation.CreatedBy);
+                    parameters.Add("@UpdatedBy", clientInformation.UpdatedBy);
+
+                    var query = "dbo.UpSertClientInformation";
+                    var data = await connection.QueryFirstOrDefaultAsync<ClientInformation>(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
             }
         }
     }

@@ -16,7 +16,7 @@ public class AlphabetRepository : IAlphabetRepository
         _logger = logger;
     }
 
-    public async Task<bool> DeleteAlphabetAsync(int id)
+    public async Task<int> DeleteAlphabetAsync(int id)
     {
         try
         {
@@ -24,8 +24,7 @@ public class AlphabetRepository : IAlphabetRepository
             {
                 var parameters = new { Id = id };
                 var query = "DeleteAlphabet";
-                var result = await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                return result > 0;
+                return await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
         catch (Exception ex)
@@ -74,7 +73,7 @@ public class AlphabetRepository : IAlphabetRepository
         }
     }
 
-    public async Task<Alphabet> InsertAlphabetAsync(Alphabet alphabet)
+    public async Task<int> InsertAlphabetAsync(Alphabet alphabet)
     {
         try
         {
@@ -89,6 +88,31 @@ public class AlphabetRepository : IAlphabetRepository
                 parameters.Add("@Description", alphabet.Description);
 
                 var query = "InsertAlphabet";
+                return await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while inserting an alphabet");
+            throw;
+        }
+    }
+
+    public async Task<Alphabet> UpSertAlphabetAsync(Alphabet alphabet)
+    {
+        try
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@Alphabet", alphabet.Name);
+                parameters.Add("@CreatedDate", alphabet.CreatedDate);
+                parameters.Add("@UpdatedDate", alphabet.UpdatedDate);
+                parameters.Add("@CreatedBy", alphabet.CreatedBy);
+                parameters.Add("@UpdatedBy", alphabet.UpdatedBy);
+                parameters.Add("@Description", alphabet.Description);
+
+                var query = "UpSertAlphabet";
                 return await connection.QueryFirstOrDefaultAsync<Alphabet>(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
@@ -99,7 +123,7 @@ public class AlphabetRepository : IAlphabetRepository
         }
     }
 
-    public async Task<bool> UpdateAlphabetAsync(Alphabet alphabet)
+    public async Task<int> UpdateAlphabetAsync(Alphabet alphabet)
     {
         try
         {
@@ -113,8 +137,7 @@ public class AlphabetRepository : IAlphabetRepository
                 parameters.Add("@Description", alphabet.Description);
 
                 var query = "UpdateAlphabet";
-                var result = await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                return result > 0;
+                return await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
         catch (Exception ex)

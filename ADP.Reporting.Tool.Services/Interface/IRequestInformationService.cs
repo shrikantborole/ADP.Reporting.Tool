@@ -9,5 +9,6 @@ namespace ADP.Reporting.Tool.Services.Interface
         Task<int> DeleteRequestInformationAsync(int id);
         Task<IEnumerable<RequestInformation>> GetRequestInformationsAsync(int pageNumber, int pageSize);
         Task<RequestInformation> GetRequestInformationByIdAsync(int id);
+        Task<RequestInformation> UpSertRequestInformationAsync(RequestInformation requestInformation);
     }
 }

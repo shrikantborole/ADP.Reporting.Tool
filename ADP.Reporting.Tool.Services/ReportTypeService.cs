@@ -37,5 +37,10 @@ namespace ADP.Reporting.Tool.Services
         {
             return await _reportTypeRepository.GetReportTypeByIdAsync(id);
         }
+
+        public async Task<ReportType> UpSertReportTypeAsync(ReportType reportType)
+        {
+            return await _reportTypeRepository.UpSertReportTypeAsync(reportType);
+        }
     }
 }

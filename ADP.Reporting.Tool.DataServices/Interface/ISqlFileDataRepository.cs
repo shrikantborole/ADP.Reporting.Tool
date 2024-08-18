@@ -9,5 +9,6 @@ namespace ADP.Reporting.Tool.DataServices.Interface
         Task<int> DeleteSqlFileDataAsync(int id);
         Task<IEnumerable<SqlFileData>> GetSqlFileDatasAsync(int pageIndex, int pageSize);
         Task<SqlFileData> GetSqlFileDataByIdAsync(int id);
+        Task<SqlFileData> UpSertSqlFileDataAsync(SqlFileData sqlFileData);
     }
 }

@@ -13,12 +13,12 @@ namespace ADP.Reporting.Tool.DataServices
 
         public RequestInformationRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString =  configuration.GetConnectionString("DefaultConnection");
         }
 
         public async Task<int> InsertRequestInformationAsync(RequestInformation requestInformation)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@ClientId", requestInformation.ClientId);
@@ -53,7 +53,7 @@ namespace ADP.Reporting.Tool.DataServices
 
         public async Task<int> DeleteRequestInformationAsync(int id)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id);
@@ -64,7 +64,7 @@ namespace ADP.Reporting.Tool.DataServices
 
         public async Task<IEnumerable<RequestInformation>> GetRequestInformationsAsync(int pageIndex, int pageSize)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@PageNumber", pageIndex);
@@ -76,12 +76,30 @@ namespace ADP.Reporting.Tool.DataServices
 
         public async Task<RequestInformation> GetRequestInformationByIdAsync(int id)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id);
 
                 return await db.QuerySingleOrDefaultAsync<RequestInformation>("GetRequestInformationById", parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<RequestInformation> UpSertRequestInformationAsync(RequestInformation requestInformation)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ClientId", requestInformation.ClientId);
+                parameters.Add("@RequestType", requestInformation.RequestType);
+                parameters.Add("@Description", requestInformation.Description);
+                parameters.Add("@CreatedDate", requestInformation.CreatedDate);
+                parameters.Add("@UpdatedDate", requestInformation.UpdatedDate);
+                parameters.Add("@CreatedBy", requestInformation.CreatedBy);
+                parameters.Add("@UpdatedBy", requestInformation.UpdatedBy);
+                parameters.Add("@ReportId", requestInformation.ReportId);
+
+                return await db.QueryFirstOrDefaultAsync<RequestInformation>("UpSertRequestInformation", parameters, commandType: CommandType.StoredProcedure);
             }
         }
     }

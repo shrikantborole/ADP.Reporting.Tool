@@ -15,8 +15,8 @@ namespace ADP.Reporting.Tool.Services
 
         public async Task<int> InsertClientInformationAsync(ClientInformation clientInformation)
         {
-            clientInformation.UpdatedDate = DateTime.Now;
-            clientInformation.CreatedDate = DateTime.Now;
+            clientInformation.UpdatedDate = clientInformation.UpdatedDate ?? DateTime.Now;
+            clientInformation.CreatedDate = clientInformation.CreatedDate ?? DateTime.Now;
             return await _clientInformationRepository.InsertClientInformationAsync(clientInformation);
         }
 
@@ -34,6 +34,11 @@ namespace ADP.Reporting.Tool.Services
         public async Task<IEnumerable<ClientInformation>> GetClientInformationAsync(int pageNumber, int pageSize)
         {
             return await _clientInformationRepository.GetClientInformationAsync(pageNumber, pageSize);
+        }
+
+        public async Task<ClientInformation> UpSertClientInformationAsync(ClientInformation clientInformation)
+        {
+            return await _clientInformationRepository.UpSertClientInformationAsync(clientInformation);
         }
     }
 }

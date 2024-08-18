@@ -10,7 +10,7 @@ public class AlphabetService : IAlphabetService
         _alphabetRepository = alphabetRepository;
     }
 
-    public async Task<bool> DeleteAlphabetAsync(int id)
+    public async Task<int> DeleteAlphabetAsync(int id)
     {
        return await _alphabetRepository.DeleteAlphabetAsync(id);
     }
@@ -26,16 +26,21 @@ public class AlphabetService : IAlphabetService
         return await _alphabetRepository.GetAlphabetByIdAsync(id);
     }
 
-    public async Task<Alphabet> InsertAlphabetAsync(Alphabet alphabet)
+    public async Task<int> InsertAlphabetAsync(Alphabet alphabet)
     {
-        alphabet.UpdatedDate = DateTime.Now;
-        alphabet.CreatedDate = DateTime.Now;
+        alphabet.UpdatedDate = alphabet.UpdatedDate ?? DateTime.Now;
+        alphabet.CreatedDate = alphabet.CreatedDate ?? DateTime.Now;
         return await _alphabetRepository.InsertAlphabetAsync(alphabet);
     }
 
-    public async Task<bool> UpdateAlphabetAsync(Alphabet alphabet)
+    public async Task<int> UpdateAlphabetAsync(Alphabet alphabet)
     {
         alphabet.UpdatedDate = DateTime.Now;
         return await _alphabetRepository.UpdateAlphabetAsync(alphabet);
+    }
+
+    public async Task<Alphabet> UpSertAlphabetAsync(Alphabet alphabet)
+    {
+        return await _alphabetRepository.UpSertAlphabetAsync(alphabet);
     }
 }

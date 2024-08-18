@@ -1,5 +1,6 @@
 using ADP.Reporting.Tool.DataServices;
 using ADP.Reporting.Tool.Middleware;
+using ADP.Reporting.Tool.Models.Configurations;
 using ADP.Reporting.Tool.Services;
 using NLog;
 using NLog.Web;
@@ -19,8 +20,14 @@ try
 
     // Add services to the container.
     builder.Services.AddControllers();
-    builder.Services.ConfigureRepositories();
+    // builder.Services.ConfigureRepositories();
     builder.Services.ConfigureServices();
+    builder.Services.AddLogging();
+    builder.Services.AddOptions<MigrationConfiguration>()
+             .Configure<IConfiguration>((options, config) =>
+             {
+                 config.GetSection("Migration").Bind(options);
+             });
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
@@ -37,7 +44,7 @@ try
 
     // Register the custom exception handling middleware
     app.UseMiddleware<ExceptionHandlingMiddleware>();
-    
+
     app.UseAuthorization();
     app.MapControllers();
     app.Run();

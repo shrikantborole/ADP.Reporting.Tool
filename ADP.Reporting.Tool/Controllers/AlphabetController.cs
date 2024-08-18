@@ -35,15 +35,18 @@ namespace ADP.Reporting.Tool.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Alphabet>> InsertAlphabet([FromBody] Alphabet alphabet)
+        public async Task<ActionResult> InsertAlphabet([FromBody] Alphabet alphabet)
         {
             if (!ModelState.IsValid)
             {
                 // Log or inspect the ModelState errors
                 return BadRequest(ModelState);
             }
-            var response = await alphabetService.InsertAlphabetAsync(alphabet);
-            return Ok(response);
+            var result = await alphabetService.InsertAlphabetAsync(alphabet);
+            if (result > 0)
+                return Ok(result);
+
+            return BadRequest("Insert failed.");
         }
 
         [HttpPut("{id}")]
@@ -55,22 +58,20 @@ namespace ADP.Reporting.Tool.Controllers
             }
 
             var result = await alphabetService.UpdateAlphabetAsync(alphabet);
-            if (!result)
-            {
-                return NotFound();
-            }
-            return NoContent();
+            if (result > 0)
+                return Ok(result);
+
+            return BadRequest("Update failed.");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAlphabet(int id)
         {
             var result = await alphabetService.DeleteAlphabetAsync(id);
-            if (!result)
-            {
-                return NotFound();
-            }
-            return NoContent();
+            if (result > 0)
+                return Ok(result);
+
+            return BadRequest("Delete failed.");
         }
     }
 }

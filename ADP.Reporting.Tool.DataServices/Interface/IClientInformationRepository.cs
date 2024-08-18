@@ -8,5 +8,7 @@ namespace ADP.Reporting.Tool.DataServices.Interface
         Task<int> UpdateClientInformationAsync(ClientInformation clientInformation);
         Task<int> DeleteClientInformationAsync(int id);
         Task<IEnumerable<ClientInformation>> GetClientInformationAsync(int pageNumber, int pageSize);
+        Task<ClientInformation> UpSertClientInformationAsync(ClientInformation clientInformation);
+
     }
 }

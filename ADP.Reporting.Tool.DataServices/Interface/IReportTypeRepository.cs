@@ -9,5 +9,6 @@ namespace ADP.Reporting.Tool.DataServices.Interface
         Task<int> DeleteReportTypeAsync(int id);
         Task<IEnumerable<ReportType>> GetReportTypesAsync(int pageIndex, int pageSize);
         Task<ReportType> GetReportTypeByIdAsync(int id);
+        Task<ReportType> UpSertReportTypeAsync(ReportType reportType);
     }
 }

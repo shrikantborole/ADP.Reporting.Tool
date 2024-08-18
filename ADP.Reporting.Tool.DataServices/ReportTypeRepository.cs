@@ -18,7 +18,7 @@ namespace ADP.Reporting.Tool.DataServices
 
         public async Task<int> InsertReportTypeAsync(ReportType reportType)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@ClientId", reportType.ClientId);
@@ -35,7 +35,7 @@ namespace ADP.Reporting.Tool.DataServices
 
         public async Task<int> UpdateReportTypeAsync(ReportType reportType)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", reportType.Id);
@@ -51,7 +51,7 @@ namespace ADP.Reporting.Tool.DataServices
 
         public async Task<int> DeleteReportTypeAsync(int id)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id);
@@ -62,7 +62,7 @@ namespace ADP.Reporting.Tool.DataServices
 
         public async Task<IEnumerable<ReportType>> GetReportTypesAsync(int pageIndex, int pageSize)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@PageNumber", pageIndex);
@@ -74,12 +74,29 @@ namespace ADP.Reporting.Tool.DataServices
 
         public async Task<ReportType> GetReportTypeByIdAsync(int id)
         {
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id);
 
                 return await db.QuerySingleOrDefaultAsync<ReportType>("GetReportTypeById", parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<ReportType> UpSertReportTypeAsync(ReportType reportType)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ClientId", reportType.ClientId);
+                parameters.Add("@Type", reportType.Type);
+                parameters.Add("@Description", reportType.Description);
+                parameters.Add("@CreatedDate", reportType.CreatedDate);
+                parameters.Add("@UpdatedDate", reportType.UpdatedDate);
+                parameters.Add("@CreatedBy", reportType.CreatedBy);
+                parameters.Add("@UpdatedBy", reportType.UpdatedBy);
+
+                return await db.QueryFirstOrDefaultAsync<ReportType>("UpSertReportType", parameters, commandType: CommandType.StoredProcedure);
             }
         }
     }

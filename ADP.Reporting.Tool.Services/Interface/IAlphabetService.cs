@@ -6,8 +6,9 @@ namespace ADP.Reporting.Tool.Services
     {
         public Task<IEnumerable<Alphabet>> GetAllAlphabetsAsync(int pageNumber, int pageSize);
         Task<Alphabet> GetAlphabetByIdAsync(int id);
-        Task<Alphabet> InsertAlphabetAsync(Alphabet alphabet);
-        Task<bool> UpdateAlphabetAsync(Alphabet alphabet);
-        Task<bool> DeleteAlphabetAsync(int id);
+        Task<int> InsertAlphabetAsync(Alphabet alphabet);
+        Task<int> UpdateAlphabetAsync(Alphabet alphabet);
+        Task<int> DeleteAlphabetAsync(int id);
+        Task<Alphabet> UpSertAlphabetAsync(Alphabet alphabet);
     }
 }

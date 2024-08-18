@@ -51,5 +51,12 @@ namespace ADP.Reporting.Tool.Controllers
             var result = await _clientInformationService.GetClientInformationAsync(pageNumber, pageSize);
             return Ok(result);
         }
+
+        [HttpPost("upsert")]
+        public async Task<IActionResult> UpSertClientInformation([FromBody] ClientInformation clientInformation)
+        {
+            var result = await _clientInformationService.UpSertClientInformationAsync(clientInformation);
+            return Ok(result);
+        }
     }
 }
