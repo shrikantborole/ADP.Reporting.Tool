@@ -23,7 +23,14 @@ AS
 BEGIN
     WITH SqlFileData_CTE AS
     (
-        SELECT *,
+        SELECT  [Id]
+      ,[RequestId]
+      ,[Description]
+      ,[SqlFileData] as SqlFileDataContent
+      ,[CreatedDate]
+      ,[UpdatedDate]
+      ,[CreatedBy]
+      ,[UpdatedBy],
                ROW_NUMBER() OVER (ORDER BY [Id]) AS RowNum
         FROM [dbo].[SqlFileData]
     )
