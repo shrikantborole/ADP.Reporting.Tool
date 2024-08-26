@@ -20,7 +20,14 @@ CREATE PROCEDURE [dbo].[GetSqlFileDataById]
     @Id INT
 AS
 BEGIN
-    SELECT * FROM [dbo].[SqlFileData]
+    SELECT  [Id]
+      ,[RequestId]
+      ,[Description]
+      ,[SqlFileData] as SqlFileDataContent
+      ,[CreatedDate]
+      ,[UpdatedDate]
+      ,[CreatedBy]
+      ,[UpdatedBy] FROM [dbo].[SqlFileData]
     WHERE [Id] = @Id;
 END
 
