@@ -1,10 +1,8 @@
-﻿using ADP.Reporting.Migration.Tool;
-using ADP.Reporting.Tool.Models.Configurations;
+﻿using ADP.Reporting.Tool.Models.Configurations;
 using ADP.Reporting.Tool.Services;
 using ADP.Reporting.Tool.Services.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
@@ -33,11 +31,8 @@ public class Program
             
             // Register your services
             ServiceExtensions.ConfigureServices(serviceCollection);
-
-            //serviceCollection.AddTransient<IDataMigratorService, DataMigratorService>();
+            serviceCollection.Configure<MigrationConfiguration>(configuration.GetSection("Migration"));
             var serviceProvider = serviceCollection.BuildServiceProvider();
-
-
             var dataMigratorService = serviceProvider.GetService<IDataMigratorService>();
             if (dataMigratorService != null)
             {

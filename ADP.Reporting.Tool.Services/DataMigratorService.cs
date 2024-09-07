@@ -48,8 +48,13 @@ namespace ADP.Reporting.Tool.Services
             _logger.Log(
                 LogLevel.Information,
                 message: $"{GetType().FullName} : {System.Reflection.MethodBase.GetCurrentMethod().Name} Started.");
-            string path = _optionSnapShot.Value.Path;
-            string clientsToMigrate = _optionSnapShot.Value.ClientsToMigrate;
+            string? path = _optionSnapShot?.Value?.Path;
+            string? clientsToMigrate = _optionSnapShot?.Value?.ClientsToMigrate;
+            if(string.IsNullOrEmpty(path) || string.IsNullOrEmpty(clientsToMigrate))
+            {
+                throw new Exception("Path and Client to Migrate should not be empty.");
+            }
+
             MigrationContext migrationContext = new MigrationContext();
             foreach (string clientName in clientsToMigrate.Split(','))
             {
