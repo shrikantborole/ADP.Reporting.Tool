@@ -9,6 +9,7 @@ namespace ADP.Reporting.Tool.Services
         {
             // Register your services here
             DataServices.ServiceExtensions.ConfigureRepositories(services);
+
             services.AddScoped<IAlphabetService, AlphabetService>();
             services.AddScoped<IClientInformationService, ClientInformationService>();
             services.AddScoped<IReportTypeService, ReportTypeService>();
