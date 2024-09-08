@@ -12,7 +12,9 @@ public class Program
     public static async Task Main(string[] args)
     {
         // Configure NLog to use nlog.config
-        var logger = LogManager.Setup().LoadConfigurationFromFile("nlog.config").GetCurrentClassLogger();
+        var logger = LogManager.Setup()
+                               .LoadConfigurationFromFile("nlog.config")
+                               .GetCurrentClassLogger();
 
         try
         {
@@ -20,7 +22,10 @@ public class Program
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
+
             var serviceCollection = new ServiceCollection();
+
+            // Add configuration and logging services
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddLogging(loggingBuilder =>
             {
@@ -28,11 +33,14 @@ public class Program
                 loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 loggingBuilder.AddNLog($"{AppDomain.CurrentDomain.BaseDirectory}/nlog.config");
             });
-            
-            // Register your services
+
+            // Register application services
             ServiceExtensions.ConfigureServices(serviceCollection);
             serviceCollection.Configure<MigrationConfiguration>(configuration.GetSection("Migration"));
+
             var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            // Execute data migration if the service is available
             var dataMigratorService = serviceProvider.GetService<IDataMigratorService>();
             if (dataMigratorService != null)
             {
@@ -41,13 +49,13 @@ public class Program
         }
         catch (Exception ex)
         {
-            // NLog: catch any exception and log it.
+            // NLog: catch any exception and log it
             logger.Error(ex, "Stopped program because of an exception.");
             throw;
         }
         finally
         {
-            // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+            // Ensure to flush and stop internal timers/threads before application-exit
             LogManager.Shutdown();
         }
     }

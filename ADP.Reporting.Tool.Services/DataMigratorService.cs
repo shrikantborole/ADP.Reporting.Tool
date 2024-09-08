@@ -6,6 +6,9 @@ using Microsoft.Extensions.Options;
 
 namespace ADP.Reporting.Tool.Services
 {
+    /// <summary>
+    /// Service to handle the migration of client, alphabet, and related data.
+    /// </summary>
     public class DataMigratorService : IDataMigratorService, IDisposable
     {
         // Track whether Dispose has been called.
@@ -19,6 +22,9 @@ namespace ADP.Reporting.Tool.Services
         private readonly IRequestInformationService _requestInformationService;
         private readonly ISqlFileDataService _sqlFileDataService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataMigratorService"/> class.
+        /// </summary>
         public DataMigratorService(ILogger<DataMigratorService> logger, IOptionsSnapshot<MigrationConfiguration> optionSnapShot, ILoggerFactory loggerFactory,
             IAlphabetService alphabetService,
             IClientInformationService clientInformationService,
@@ -38,109 +44,172 @@ namespace ADP.Reporting.Tool.Services
 
         }
 
+        /// <summary>
+        /// Starts the data migration process.
+        /// </summary>
         public async Task Run()
         {
-            await PopulateClientAlphabet();
+            try
+            {
+                _logger.LogInformation("Data migration process started.");
+                await PopulateClientAlphabet();
+                _logger.LogInformation("Data migration process completed successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while running the data migration process.");
+                throw;
+            }
         }
 
+
+        /// <summary>
+        /// Populates the alphabet data for clients to be migrated.
+        /// </summary>
         private async Task PopulateClientAlphabet()
         {
-            _logger.Log(
-                LogLevel.Information,
-                message: $"{GetType().FullName} : {System.Reflection.MethodBase.GetCurrentMethod().Name} Started.");
-            string? path = _optionSnapShot?.Value?.Path;
-            string? clientsToMigrate = _optionSnapShot?.Value?.ClientsToMigrate;
-            if(string.IsNullOrEmpty(path) || string.IsNullOrEmpty(clientsToMigrate))
+            try
             {
-                throw new Exception("Path and Client to Migrate should not be empty.");
-            }
+                _logger.LogInformation($"{GetType().FullName} : {System.Reflection.MethodBase.GetCurrentMethod().Name} Started.");
+                string? path = _optionSnapShot?.Value?.Path;
+                string? clientsToMigrate = _optionSnapShot?.Value?.ClientsToMigrate;
 
-            MigrationContext migrationContext = new MigrationContext();
-            foreach (string clientName in clientsToMigrate.Split(','))
-            {
-                var alphabet = await _alphabetService.UpSertAlphabetAsync(new Models.Alphabet()
+                if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(clientsToMigrate))
                 {
-                    Name = clientName,
-                    Description = "Migartion Script - Inserted Record",
-                    CreatedBy = "MigartionUser",
-                    UpdatedBy = "MigrationUser",
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
-                });
-                migrationContext.AlphabetId = alphabet.Id;
-                _logger.Log(LogLevel.Information, $"Migration: UpSert Alphabet : '{clientName}' with Id '{migrationContext.AlphabetId}' done.");
-                await PopulateClient($"{path}\\{clientName}", migrationContext);
+                    throw new ArgumentException("Path and ClientsToMigrate should not be empty.");
+                }
+
+                MigrationContext migrationContext = new MigrationContext();
+                foreach (string clientName in clientsToMigrate.Split(','))
+                {
+                    var alphabet = await _alphabetService.UpSertAlphabetAsync(new Models.Alphabet()
+                    {
+                        Name = clientName,
+                        Description = "Migration Script - Inserted Record",
+                        CreatedBy = "MigrationUser",
+                        UpdatedBy = "MigrationUser",
+                        CreatedDate = DateTime.Now,
+                        UpdatedDate = DateTime.Now
+                    });
+
+                    migrationContext.AlphabetId = alphabet.Id;
+                    _logger.LogInformation($"Migration: UpSert Alphabet : '{clientName}' with Id '{migrationContext.AlphabetId}' done.");
+                    await PopulateClient($"{path}\\{clientName}", migrationContext);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while populating client alphabet data.");
+                throw;
             }
         }
 
+
+        /// <summary>
+        /// Populates the client data.
+        /// </summary>
+        /// <param name="clientPath">The path of the client.</param>
+        /// <param name="migrationContext">The context of the migration.</param>
         private async Task PopulateClient(string clientPath, MigrationContext migrationContext)
         {
-            string[] clientNames = GetDirectories(clientPath);
-            foreach (string clientName in clientNames)
+            try
             {
-                var clientInformation = await _clientInformationService.UpSertClientInformationAsync(
-                  new Models.ClientInformation()
-                  {
-                      AlphabetId = migrationContext.AlphabetId,
-                      Name = clientName,
-                      Description = "Migartion Script - Inserted Record",
-                      CreatedBy = "MigartionUser",
-                      UpdatedBy = "MigrationUser",
-                      CreatedDate = DateTime.Now,
-                      UpdatedDate = DateTime.Now
-                  });
+                _logger.LogInformation($"{GetType().FullName} : {System.Reflection.MethodBase.GetCurrentMethod().Name} Started.");
+                string? path = _optionSnapShot?.Value?.Path;
+                string? clientsToMigrate = _optionSnapShot?.Value?.ClientsToMigrate;
 
-                migrationContext.ClientId = clientInformation.Id;
-                migrationContext.ClinetName = clientInformation.Name;
-                _logger.Log(LogLevel.Information, $"Migration: UpSert Client name '{clientName}' of Id '{migrationContext.ClientId}' done.");
-                await PopulateReportType($"{clientPath}\\{clientName}", migrationContext);
+                if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(clientsToMigrate))
+                {
+                    throw new ArgumentException("Path and ClientsToMigrate should not be empty.");
+                }
+
+                foreach (string clientName in clientsToMigrate.Split(','))
+                {
+                    var alphabet = await _alphabetService.UpSertAlphabetAsync(new Models.Alphabet()
+                    {
+                        Name = clientName,
+                        Description = "Migration Script - Inserted Record",
+                        CreatedBy = "MigrationUser",
+                        UpdatedBy = "MigrationUser",
+                        CreatedDate = DateTime.Now,
+                        UpdatedDate = DateTime.Now
+                    });
+
+                    migrationContext.AlphabetId = alphabet.Id;
+                    _logger.LogInformation($"Migration: UpSert Alphabet : '{clientName}' with Id '{migrationContext.AlphabetId}' done.");
+                    await PopulateClient($"{path}\\{clientName}", migrationContext);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while populating client alphabet data.");
+                throw;
             }
         }
 
+        /// <summary>
+        /// Populates report types for a given client.
+        /// </summary>
         private async Task PopulateReportType(string clientNamePath, MigrationContext migrationContext)
         {
-            string[] reportTypes = GetDirectories(clientNamePath);
-            foreach (string reportType in reportTypes)
+            try
             {
-                var reportTypeInformation = await _reportTypeService.UpSertReportTypeAsync(
-                  new Models.ReportType()
-                  {
-                      Type = reportType,
-                      Description = "Migartion Script - Inserted Record",
-                      CreatedBy = "MigartionUser",
-                      UpdatedBy = "MigrationUser",
-                      CreatedDate = DateTime.Now,
-                      UpdatedDate = DateTime.Now,
-                      ClientId = migrationContext.ClientId,
-                  });
+                string[] reportTypes = GetDirectories(clientNamePath);
+                foreach (string reportType in reportTypes)
+                {
+                    var reportTypeInformation = await _reportTypeService.UpSertReportTypeAsync(
+                      new Models.ReportType()
+                      {
+                          Type = reportType,
+                          Description = "Migration Script - Inserted Record",
+                          CreatedBy = "MigrationUser",
+                          UpdatedBy = "MigrationUser",
+                          CreatedDate = DateTime.Now,
+                          UpdatedDate = DateTime.Now,
+                          ClientId = migrationContext.ClientId,
+                      });
 
-                migrationContext.ReportId = reportTypeInformation.Id;
-                _logger.Log(LogLevel.Information, $"Migration: Upsert Report type '{reportType}' of Id '{migrationContext.ReportId}' for client '{migrationContext.ClinetName}' done.");
-                await PopulateRequestInformation($"{clientNamePath}\\{reportType}", migrationContext);
+                    migrationContext.ReportId = reportTypeInformation.Id;
+                    _logger.LogInformation($"Migration: Upsert Report type '{reportType}' with Id '{migrationContext.ReportId}' for client '{migrationContext.ClinetName}' done.");
+                    await PopulateRequestInformation($"{clientNamePath}\\{reportType}", migrationContext);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while populating report types.");
+                throw;
             }
         }
 
         private async Task PopulateRequestInformation(string reportTypePath, MigrationContext migrationContext)
         {
-            string[] requestNumbers = GetDirectories(reportTypePath);
-            foreach (string requestNumber in requestNumbers)
+            try
             {
-                var requestInformation = await _requestInformationService.UpSertRequestInformationAsync(
-                  new Models.RequestInformation()
-                  {
-                      ReportId = migrationContext.ReportId,
-                      RequestType = requestNumber,
-                      Description = "Migartion Script - Inserted Record",
-                      CreatedBy = "MigartionUser",
-                      UpdatedBy = "MigrationUser",
-                      CreatedDate = DateTime.Now,
-                      UpdatedDate = DateTime.Now,
-                      ClientId = migrationContext.ClientId,
-                  }
-              );
-                migrationContext.RequestInformationId = requestInformation.Id;
-                _logger.Log(LogLevel.Information, $"Migration: UpSert for Request number '{requestNumber}' of Id '{migrationContext.RequestInformationId}' for client '{migrationContext.ClinetName}' done.");
-                await PopulateRequestNumber($"{reportTypePath}\\{requestNumber}", migrationContext);
+                string[] requestNumbers = GetDirectories(reportTypePath);
+                foreach (string requestNumber in requestNumbers)
+                {
+                    var requestInformation = await _requestInformationService.UpSertRequestInformationAsync(
+                      new Models.RequestInformation()
+                      {
+                          ReportId = migrationContext.ReportId,
+                          RequestType = requestNumber,
+                          Description = "Migartion Script - Inserted Record",
+                          CreatedBy = "MigartionUser",
+                          UpdatedBy = "MigrationUser",
+                          CreatedDate = DateTime.Now,
+                          UpdatedDate = DateTime.Now,
+                          ClientId = migrationContext.ClientId,
+                      }
+                  );
+                    migrationContext.RequestInformationId = requestInformation.Id;
+                    _logger.Log(LogLevel.Information, $"Migration: UpSert for Request number '{requestNumber}' of Id '{migrationContext.RequestInformationId}' for client '{migrationContext.ClinetName}' done.");
+                    await PopulateRequestNumber($"{reportTypePath}\\{requestNumber}", migrationContext);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while populating request information.");
+                throw;
             }
         }
 
@@ -195,7 +264,6 @@ namespace ADP.Reporting.Tool.Services
                     (_sqlFileDataService as IDisposable)?.Dispose();
                 }
                 // Dispose unmanaged resources here if any
-
                 _disposed = true;
             }
         }
