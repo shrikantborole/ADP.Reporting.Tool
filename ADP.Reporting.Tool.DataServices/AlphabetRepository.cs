@@ -3,7 +3,9 @@ using ADP.Reporting.Tool.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 public class AlphabetRepository : IAlphabetRepository
 {
@@ -24,7 +26,9 @@ public class AlphabetRepository : IAlphabetRepository
             {
                 var parameters = new { Id = id };
                 var query = "DeleteAlphabet";
-                return await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                int rowsAffected = await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                _logger.LogInformation("Deleted alphabet with ID {Id}. Rows affected: {RowsAffected}", id, rowsAffected);
+                return rowsAffected;
             }
         }
         catch (Exception ex)
@@ -45,7 +49,9 @@ public class AlphabetRepository : IAlphabetRepository
                 parameters.Add("@PageSize", pageSize);
 
                 var query = "GetAllAlphabets";
-                return await connection.QueryAsync<Alphabet>(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                var alphabets = await connection.QueryAsync<Alphabet>(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                _logger.LogInformation("Retrieved {Count} alphabets for page {PageNumber} with size {PageSize}", alphabets.AsList().Count, pageNumber, pageSize);
+                return alphabets;
             }
         }
         catch (Exception ex)
@@ -63,7 +69,16 @@ public class AlphabetRepository : IAlphabetRepository
             {
                 var parameters = new { Id = id };
                 var query = "GetAlphabetById";
-                return await connection.QueryFirstOrDefaultAsync<Alphabet>(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                var alphabet = await connection.QueryFirstOrDefaultAsync<Alphabet>(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                if (alphabet != null)
+                {
+                    _logger.LogInformation("Retrieved alphabet with ID {Id}", id);
+                }
+                else
+                {
+                    _logger.LogWarning("No alphabet found with ID {Id}", id);
+                }
+                return alphabet;
             }
         }
         catch (Exception ex)
@@ -88,17 +103,19 @@ public class AlphabetRepository : IAlphabetRepository
                 parameters.Add("@Description", alphabet.Description);
 
                 var query = "InsertAlphabet";
-                return await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                int rowsAffected = await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                _logger.LogInformation("Inserted alphabet with Name {AlphabetName}. Rows affected: {RowsAffected}", alphabet.Name, rowsAffected);
+                return rowsAffected;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while inserting an alphabet");
+            _logger.LogError(ex, "An error occurred while inserting an alphabet with Name {AlphabetName}", alphabet.Name);
             throw;
         }
     }
 
-    public async Task<Alphabet> UpSertAlphabetAsync(Alphabet alphabet)
+    public async Task<Alphabet> UpsertAlphabetAsync(Alphabet alphabet)
     {
         try
         {
@@ -113,12 +130,21 @@ public class AlphabetRepository : IAlphabetRepository
                 parameters.Add("@Description", alphabet.Description);
 
                 var query = "UpSertAlphabet";
-                return await connection.QueryFirstOrDefaultAsync<Alphabet>(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<Alphabet>(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                if (result != null)
+                {
+                    _logger.LogInformation("UpSerted alphabet with Name {AlphabetName}", alphabet.Name);
+                }
+                else
+                {
+                    _logger.LogWarning("No alphabet returned after UpSert with Name {AlphabetName}", alphabet.Name);
+                }
+                return result;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while inserting an alphabet");
+            _logger.LogError(ex, "An error occurred while UpSerting an alphabet with Name {AlphabetName}", alphabet.Name);
             throw;
         }
     }
@@ -137,7 +163,9 @@ public class AlphabetRepository : IAlphabetRepository
                 parameters.Add("@Description", alphabet.Description);
 
                 var query = "UpdateAlphabet";
-                return await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                int rowsAffected = await connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                _logger.LogInformation("Updated alphabet with ID {Id}. Rows affected: {RowsAffected}", alphabet.Id, rowsAffected);
+                return rowsAffected;
             }
         }
         catch (Exception ex)

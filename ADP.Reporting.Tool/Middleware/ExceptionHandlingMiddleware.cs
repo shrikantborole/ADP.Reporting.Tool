@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.Json;
 
 namespace ADP.Reporting.Tool.Middleware
 {
@@ -6,11 +7,13 @@ namespace ADP.Reporting.Tool.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        private readonly IWebHostEnvironment _env;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger, IWebHostEnvironment env)
         {
             _next = next;
             _logger = logger;
+            _env = env;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -21,13 +24,14 @@ namespace ADP.Reporting.Tool.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, "An unhandled exception occurred.");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+            var isDevelopment = _env.IsDevelopment();
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
@@ -35,11 +39,13 @@ namespace ADP.Reporting.Tool.Middleware
             {
                 StatusCode = context.Response.StatusCode,
                 Message = "Internal Server Error. An unexpected error occurred.",
-                Detailed = exception.Message,
-                StackStrace = exception.ToString()
+                // Only include detailed exception information in development mode
+                Detailed = isDevelopment ? exception.Message : null,
+                StackTrace = isDevelopment ? exception.StackTrace : null
             };
 
-            return context.Response.WriteAsJsonAsync(response);
+            var jsonResponse = JsonSerializer.Serialize(response);
+            return context.Response.WriteAsync(jsonResponse);
         }
     }
 }
