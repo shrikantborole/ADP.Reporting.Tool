@@ -13,7 +13,7 @@ namespace ADP.Reporting.Tool.Services
         /// <param name="pageNumber">The page number for pagination.</param>
         /// <param name="pageSize">The number of items per page.</param>
         /// <returns>A collection of alphabets.</returns>
-        Task<IEnumerable<Alphabet>> GetAllAlphabetsAsync(int pageNumber, int pageSize);
+        Task<IEnumerable<Alphabet>> GetAllAlphabetsAsync(int pageNumber = 1, int pageSize = 26);
 
         /// <summary>
         /// Retrieves an alphabet by its ID.

@@ -1,0 +1,43 @@
+﻿@model List<ADP.Reporting.Tool.Models.ClientInformation>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created Date</th>
+            <th>Updated Date</th>
+            <th>Created By</th>
+            <th>Updated By</th>
+            <th>Report Type Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var client in Model)
+            {
+                <tr>
+                    <td>@client.Id</td>
+                    <td>@client.Name</td>
+                    <td>@client.Description</td>
+                    <td>@client.CreatedDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@client.UpdatedDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@client.CreatedBy</td>
+                    <td>@client.UpdatedBy</td>
+                    <td>
+                        <!-- Link to ReportType page with clientId -->
+                        <a href="@Url.Action("ReportType", "Home", new { clientId = client.Id })">Clicke Here</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">No client information available.</td>
+            </tr>
+        }
+    </tbody>
+</table>

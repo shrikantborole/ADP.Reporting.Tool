@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Alphabets Filter";
+}
+@model List<ADP.Reporting.Tool.Models.Alphabet>
+
+<style>
+    .btn-group {
+        gap: 5px; /* Space between buttons */
+    }
+
+    @@media (max-width: 576px) {
+        .alphabet-filter {
+            flex: 1 0 20%; /* Adjust size for small screens (20% width) */
+        }
+    }
+
+    @@media (min-width: 577px) and (max-width: 768px) {
+        .alphabet-filter {
+            flex: 1 0 15%; /* Adjust size for medium screens (15% width) */
+        }
+    }
+
+    @@media (min-width: 769px) {
+        .alphabet-filter {
+            flex: 1 0 10%; /* Adjust size for large screens (10% width) */
+        }
+    }
+
+    .section-title {
+        margin-bottom: 20px; /* Adjust this value as needed */
+    }
+</style>
+<h1 class="section-title">Client Details</h1>
+<div class="text-center">
+    <div class="btn-group d-flex flex-wrap" role="group" aria-label="Alphabet Filter">
+        <!-- Generate A-Z buttons dynamically or hard-code them -->
+        @foreach (var alphabet in Model)
+        {
+            <button type="button" class="btn btn-outline-primary alphabet-filter flex-fill"
+            data-letter="@alphabet.Id">@alphabet.Name</button>
+        }
+    </div>
+    <!-- Container for the partial view -->
+    <div id="clientDetailsContainer" class="mt-4">
+        <!-- Partial view content will be injected here -->
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.alphabet-filter').click(function () {
+            debugger; // Start debugging
+            var selectedLetter = $(this).data('letter'); // Get the letter from data attribute
+
+            // Update button styles
+            $('.alphabet-filter').removeClass('btn-primary').addClass('btn-outline-primary');
+            $(this).removeClass('btn-outline-primary').addClass('btn-primary');
+            // Check selected letter value
+
+            // Make an AJAX call to get the partial view
+            $.ajax({
+                url: '@Url.Action("GetClientDetails", "Home")', // Adjust the controller and action name as needed
+                type: 'GET',
+                data: { alphabetId: selectedLetter },
+                success: function (data) {
+                    // Replace the content of the div with the received partial view
+                    $('#clientDetailsContainer').html(data);
+                },
+                error: function (xhr, status, error) {
+                    debugger
+                    console.error("Error loading data: ", error);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,167 @@
+﻿@* @model List<ADP.Reporting.Tool.Models.RequestInformation>
+
+@{
+    ViewData["Title"] = "RequestInformation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .section-title {
+        margin-bottom: 20px; /* Adjust this value as needed */
+    }
+</style>
+
+<h1 class="section-title">Request Information</h1>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().Id)</th>
+                <th>@Html.DisplayNameFor(model => model.First().ClientId)</th>
+                <th>@Html.DisplayNameFor(model => model.First().RequestType)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+                <th>@Html.DisplayNameFor(model => model.First().CreatedDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().UpdatedDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().CreatedBy)</th>
+                <th>@Html.DisplayNameFor(model => model.First().UpdatedBy)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.ClientId</td>
+                        <td>@item.RequestType</td>
+                        <td>@item.Description</td>
+                        <td>@item.CreatedDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@item.UpdatedDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@item.CreatedBy</td>
+                        <td>@item.UpdatedBy</td>
+                        <td>
+                            <a href="@Url.Action("SqlFileData", "Home", new { requestId = item.Id })">Click Here</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="10" class="text-center">No Request Information records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div> *@
+
+@model List<ADP.Reporting.Tool.Models.RequestInformation>
+
+@{
+    ViewData["Title"] = "Request Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .section-title {
+        margin-bottom: 20px;
+    }
+</style>
+
+<h1 class="section-title">Request Information</h1>
+
+<!-- Table displaying Request Information -->
+<div>
+    <table id="requestInfoTable" class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().Id)</th>
+                <th>@Html.DisplayNameFor(model => model.First().ClientId)</th>
+                <th>@Html.DisplayNameFor(model => model.First().RequestType)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+                <th>@Html.DisplayNameFor(model => model.First().CreatedDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().UpdatedDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().CreatedBy)</th>
+                <th>@Html.DisplayNameFor(model => model.First().UpdatedBy)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.ClientId</td>
+                        <td>@item.RequestType</td>
+                        <td>@item.Description</td>
+                        <td>@item.CreatedDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@item.UpdatedDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@item.CreatedBy</td>
+                        <td>@item.UpdatedBy</td>
+                        <td>
+                            <a href="javascript:void(0);" class="view-sql" data-id="@item.Id">Click Here</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="10" class="text-center">No Request Information records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal for displaying SQL query -->
+<div class="modal fade" id="sqlModal" tabindex="-1" aria-labelledby="sqlModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sqlModalLabel">SQL Query Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <pre id="sqlContent" class="sql-content"></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        // Attach click event to links with class 'view-sql'
+        $('.view-sql').on('click', function () {
+            var requestId = $(this).data('id');
+
+            // Make an AJAX request to fetch the SQL query
+            $.ajax({
+                url: '@Url.Action("SqlFileData", "Home")', // Update with your controller action
+                type: 'GET',
+                data: { requestId: requestId },
+                success: function (response) {
+                    // Use sql-formatter to format the SQL query
+                    var formattedSQL = sqlFormatter.format(response.sqlQuery);
+
+                    // Insert the formatted SQL into the modal content
+                    $('#sqlContent').text(formattedSQL);
+
+                    // Show the modal
+                    $('#sqlModal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching SQL query:', error);
+                }
+            });
+        });
+    });
+</script>

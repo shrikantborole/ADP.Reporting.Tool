@@ -1,0 +1,57 @@
+﻿@model List<ADP.Reporting.Tool.Models.ReportType>
+
+@{
+    ViewData["Title"] = "Report Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .section-title {
+        margin-bottom: 20px; /* Adjust this value as needed */
+    }
+</style>
+<h1 class="section-title">Report Type</h1>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m[0].Id)</th>
+                <th>@Html.DisplayNameFor(m => m[0].ClientId)</th>
+                <th>@Html.DisplayNameFor(m => m[0].Type)</th>
+                <th>@Html.DisplayNameFor(m => m[0].Description)</th>
+                <th>@Html.DisplayNameFor(m => m[0].CreatedDate)</th>
+                <th>@Html.DisplayNameFor(m => m[0].UpdatedDate)</th>
+                <th>@Html.DisplayNameFor(m => m[0].CreatedBy)</th>
+                <th>@Html.DisplayNameFor(m => m[0].UpdatedBy)</th>
+                <th>Request Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var report in Model)
+                {
+                    <tr>
+                        <td>@report.Id</td>
+                        <td>@report.ClientId</td>
+                        <td>@report.Type</td>
+                        <td>@report.Description</td>
+                        <td>@report.CreatedDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@report.UpdatedDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@report.CreatedBy</td>
+                        <td>@report.UpdatedBy</td>
+                        <td>
+                            <a href="@Url.Action("RequestInformation", "Home", new { reportId = report.Id })">Click Here</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" class="text-center">No ReportType records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
