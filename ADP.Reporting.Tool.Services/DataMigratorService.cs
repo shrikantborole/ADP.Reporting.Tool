@@ -116,28 +116,31 @@ namespace ADP.Reporting.Tool.Services
             {
                 _logger.LogInformation($"{GetType().FullName} : {System.Reflection.MethodBase.GetCurrentMethod().Name} Started.");
                 string? path = _optionSnapShot?.Value?.Path;
-                string? clientsToMigrate = _optionSnapShot?.Value?.ClientsToMigrate;
 
-                if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(clientsToMigrate))
+                if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(clientPath))
                 {
-                    throw new ArgumentException("Path and ClientsToMigrate should not be empty.");
+                    throw new ArgumentException("Path and client Path should not be empty.");
                 }
 
-                foreach (string clientName in clientsToMigrate.Split(','))
+                string[] clientNames = GetDirectories(clientPath);
+                foreach (string clientName in clientNames)
                 {
-                    var alphabet = await _alphabetService.UpSertAlphabetAsync(new Models.Alphabet()
-                    {
-                        Name = clientName,
-                        Description = "Migration Script - Inserted Record",
-                        CreatedBy = "MigrationUser",
-                        UpdatedBy = "MigrationUser",
-                        CreatedDate = DateTime.Now,
-                        UpdatedDate = DateTime.Now
-                    });
+                    var clientInformation = await _clientInformationService.UpSertClientInformationAsync(
+                      new Models.ClientInformation()
+                      {
+                          AlphabetId = migrationContext.AlphabetId,
+                          Name = clientName,
+                          Description = "Migartion Script - Inserted Record",
+                          CreatedBy = "MigartionUser",
+                          UpdatedBy = "MigrationUser",
+                          CreatedDate = DateTime.Now,
+                          UpdatedDate = DateTime.Now
+                      });
 
-                    migrationContext.AlphabetId = alphabet.Id;
-                    _logger.LogInformation($"Migration: UpSert Alphabet : '{clientName}' with Id '{migrationContext.AlphabetId}' done.");
-                    await PopulateClient($"{path}\\{clientName}", migrationContext);
+                    migrationContext.ClientId = clientInformation.Id;
+                    migrationContext.ClinetName = clientInformation.Name;
+                    _logger.Log(LogLevel.Information, $"Migration: UpSert Client name '{clientName}' of Id '{migrationContext.ClientId}' done.");
+                    await PopulateReportType($"{clientPath}\\{clientName}", migrationContext);
                 }
             }
             catch (Exception ex)
